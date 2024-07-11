@@ -1,3 +1,7 @@
+#ifdef PLAYER_H
+#define PLAYER_H
+
+
 typedef struct 
 {
     char name[100];
@@ -6,4 +10,5 @@ typedef struct
 }Player;
 
 
-int updateBalance(Player *p, int amount);
+void updateBalance(Player *p, int amount);
+#endif

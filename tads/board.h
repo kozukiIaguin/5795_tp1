@@ -1,3 +1,6 @@
+#ifdef BOARD_H
+#define BOARD_H
+
 #include "locality.h"
 
 
@@ -14,3 +17,4 @@ Locality createLocality();
 void insertLocality(Node* head,Locality *Locality);
 void printBoard(Node *node);
 void advance(Node *node, int num);
+#endif

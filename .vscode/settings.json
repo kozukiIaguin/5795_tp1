@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "locality.h": "c",
+        "board.h": "c"
+    }
+}
