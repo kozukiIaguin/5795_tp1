@@ -1,4 +1,3 @@
-#ifdef PLAYER_H
 #define PLAYER_H
 
 
@@ -11,4 +10,3 @@ typedef struct
 
 
 void updateBalance(Player *p, int amount);
-#endif

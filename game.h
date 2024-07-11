@@ -1,6 +1,6 @@
-#ifdef GAME_H
-#define GAME_H
 #include "board.h"
+#define GAME_H
+
 void fillBoard(Node *node, Locality *locality);
 void addPlayer(Player *player);
 void rollDice();
@@ -12,4 +12,4 @@ void build(Node *node,Player *player);
 void nextRound();
 void printGame();
 
-#endif
+

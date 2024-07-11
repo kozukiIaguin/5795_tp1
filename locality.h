@@ -1,4 +1,4 @@
-#ifdef LOCALITY_H
+
 #define LOCALITY_H
 
 #include "player.h"
@@ -13,16 +13,16 @@ typedef struct
 {
     char address[100];
     Color color;
-    int purchcaseCost;
+    int Cost;
     int rentalPrice;
     char owner[100];
-    int purshcased;
+    int purchased;
     int houseAmount;
     int hotelAmount;
 }Locality;
-Locality initializeLocality();
-//bool isPurshcased(Locality *locality);
+Locality initializeLocality(Locality *loc,char *address[100], Color *color,int *cost,int *rentalPrice);
+//bool purchased(Locality *locality);
 void buyLocality(Player *player, Locality *locality);
 
-#endif
+
 
