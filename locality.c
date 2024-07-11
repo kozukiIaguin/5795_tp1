@@ -17,13 +17,13 @@ Locality initializeLocality(Locality *loc,char *address[100], Color *color,int *
 }
 void buyLocality(Player *player,Locality *locality){
     //check if player has cash to buy the locality
-    int playerBalance= player->balance;
+    
 
-    if (playerBalance < locality->Cost && locality->purchased=0)
+   /* if (player->balance < locality->Cost && locality->purchased=0)
     {
         printf("not enought balance");
         return 0;
-    }
+    }*/
     strcpy(locality->owner,player->name);
     player->balance-=locality->Cost;
     locality->purchased=1;
