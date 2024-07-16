@@ -19,6 +19,7 @@ typedef struct
     int purchased;
     int houseAmount;
     int hotelAmount;
+    Player playerOnLoc[];
 }Locality;
 Locality initializeLocality(Locality *loc,char *address[100], Color *color,int *cost,int *rentalPrice);
 //bool purchased(Locality *locality);
