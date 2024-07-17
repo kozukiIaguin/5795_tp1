@@ -3,7 +3,6 @@
 #include <stddef.h>
 
 void initializeList(linkedList *list){
-    list->first = malloc(sizeof(Node));
     list->last = list->first; 
     list->first.next = NULL; 
     list->first.locality = NULL; 
@@ -46,9 +45,34 @@ Locality getLocality(linkedList *list){
     if (current!=NULL)
     {
       return *current->locality;
-    }else return *current;
+    }else return *current->locality;
   }
 }
-void advance(linkedList *list,int num){
+void advance(linkedList *list,Player *player, int num){
+    int playerIndex;
+    Locality currentLocality, nextLocality;
+    currentLocality = getLocality(list);
+    for (int j = 0; j < list->size; j++){
+      //compare and remove the player from the locality
+      if (strcmp(currentLocality.playerOnLoc[j].name,player->name)==0){
+          removePlayerFromLocality(&currentLocality,j);
+          playerIndex=j;
+      }
+    }
+     //moves it to the location
+      Node *node = &(list->first);
+      for (int k = 0; k < num; k++)
+      {
+        node = node->next;
+        if(node==NULL){
+          *node=list->first;
+        }
+      }
+      nextLocality = *(node->locality);
+      
+
+    
+    
+  
     
 }

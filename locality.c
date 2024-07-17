@@ -10,6 +10,8 @@ Locality initializeLocality(Locality *loc,char *address[100], Color *color,int *
     loc->houseAmount=0;
     strcpy(loc->owner,"");
     loc->purchased=0;
+    loc->numPlayersOnLoc = 0;
+    
     
 
     return *loc;
@@ -28,4 +30,11 @@ void buyLocality(Player *player,Locality *locality){
     player->balance-=locality->Cost;
     locality->purchased=1;
 
+}
+void removePlayerFromLocality(Locality *locality, int index){
+    for (int i = index; i < locality->numPlayersOnLoc-1; i++)
+    {
+        locality->playerOnLoc[i]=locality->playerOnLoc[i+1];
+    }
+    locality->numPlayersOnLoc-=1;
 }
