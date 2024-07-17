@@ -1,0 +1,27 @@
+Leblon;Roxo;100;6
+Estacao Ferroviaria;Cinza;400;20
+Av. Presidente Vargas;Roxo;100;6
+Av. Nossa Sra. de Copacabana;Azul Claro;200;15
+Av. Brigadeiro Faria Lima;Azul Claro;200;15
+Companhia Aerea;Branco;500;25
+Av. Reboucas;Azul Claro;240;20
+Av. 9 de Julho;Rosa;300;26
+Av. Europa;Rosa;300;26
+Rua Augusta;Rosa;360;32
+Pacaembu;Rosa;400;35
+Interlagos;Laranja;400;35
+Estacao Rodoviaria;Cinza;400;20
+Morumbi;Laranja;450;40
+FlamengoVermelho;500;45
+Botafogo;Vermelho;600;55
+Av. Brasil;Amarelo;700;75
+Av. Paulista;Amarelo;700;75
+Companhia  de Navegacao;Branco;500;25
+Av. Ipiranga;Amarelo;800;80
+Copacabana;Verde;850;85
+Av. Vieira Souto;Verde;900;85
+Estacao de Metro;Cinza;400;20
+Av. Atlantica;Verde;1000;100
+Ipanema;Verde;1000;110
+Jardim Paulista;Azul;1100;110
+Ibirapuera;Azul;1200;130

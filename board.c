@@ -45,7 +45,8 @@ Locality getLocality(linkedList *list){
     if (current!=NULL)
     {
       return *current->locality;
-    }else return *current->locality;
+    }else // Handle the case when the index is out of bounds
+        return (Locality){}; // Return an empty locality
   }
 }
 void advance(linkedList *list,Player *player, int num){
@@ -65,14 +66,18 @@ void advance(linkedList *list,Player *player, int num){
       {
         node = node->next;
         if(node==NULL){
-          *node=list->first;
+          node=&(list->first);
         }
       }
-      nextLocality = *(node->locality);
-      
-
-    
-    
-  
-    
+      int numOnThisLoc = node->locality->numPlayersOnLoc;
+      node->locality->playerOnLoc[numOnThisLoc]=*player;
+      node->locality->numPlayersOnLoc++;
+}
+void printBoard(linkedList *list){
+  Node *node = &(list->first);
+  while (node->next!=NULL)
+  {
+    printf("%s -->",node->locality->address);
+    node = node->next;
+  } 
 }
