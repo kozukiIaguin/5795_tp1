@@ -1,8 +1,9 @@
 #include "board.h"
-#define GAME_H
+
+
 
 void fillBoard(linkedList *list);
-void addPlayer(Player *player);
+void addPlayer(Player *player[]);
 void rollDice();
 void movePlayer(Node *node,Player *player);
 void buyProperty(Node* node,Player *player);

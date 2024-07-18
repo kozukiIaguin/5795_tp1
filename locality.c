@@ -1,9 +1,9 @@
 #include "locality.h"
 #include <string.h>
 
-Locality initializeLocality(Locality *loc,char *address[100], Color *color,int *cost,int *rentalPrice){
+Locality initializeLocality(Locality *loc,char *address[100], char *color[],int *cost,int *rentalPrice){
     strcpy(loc->address,address);
-    loc->color=color;
+    strcpy(loc->color,color);
     loc->Cost=cost;
     loc->rentalPrice=rentalPrice;
     loc->hotelAmount=0;
@@ -11,6 +11,7 @@ Locality initializeLocality(Locality *loc,char *address[100], Color *color,int *
     strcpy(loc->owner,"");
     loc->purchased=0;
     loc->numPlayersOnLoc = 0;
+   // loc->playerOnLoc = malloc (sizeof((player)*loc->numPlayersOnLoc));
     
     
 

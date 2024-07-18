@@ -5,6 +5,7 @@
 
 
 
+
 //creating the structure for the linked list 
 //that will handle the localities from the boards
 typedef struct 
