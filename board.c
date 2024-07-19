@@ -34,15 +34,15 @@ int insertLocality(linkedList *list, Locality *locality) {
     list->size++; 
     return 1; 
 }
-Locality getLocality(linkedList *list){
+Locality getLocality(linkedList *list,int index){
   Node *current = &(list->first);
   int i=0;
   
-  while (current !=NULL && i<list->size)
+  while (current !=NULL && i<index)
   {
     current = current->next;
     i++;
-    if (current!=NULL)
+    if (current!=NULL && i==index)
     {
       return *current->locality;
     }else // Handle the case when the index is out of bounds
@@ -51,13 +51,13 @@ Locality getLocality(linkedList *list){
 }
 void advance(linkedList *list,Player *player, int num){
     int playerIndex;
-    Locality currentLocality, nextLocality;
-    currentLocality = getLocality(list);
+    Locality *currentLocality=list->first.locality, *nextLocality;
     for (int j = 0; j < list->size; j++){
       //compare and remove the player from the locality
-      if (strcmp(currentLocality.playerOnLoc[j].name,player->name)==0){
+      if (strcmp(currentLocality->playerOnLoc[0].name,player->name)==0){
           removePlayerFromLocality(&currentLocality,j);
           playerIndex=j;
+          player->positionNumber=playerIndex;
       }
     }
      //moves it to the location

@@ -6,6 +6,7 @@ typedef struct
     char name[100];
     int num;
     int balance;
+    int positionNumber;
 }Player;
 
 

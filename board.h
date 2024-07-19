@@ -26,5 +26,5 @@ void createList(linkedList *list);
 int insertLocality(linkedList *list,Locality *locality);
 void printBoard(linkedList *list);
 void advance(linkedList *list,Player *player,int num);
-Locality getLocality(linkedList *list);
+Locality getLocality(linkedList *list,int index);
 
