@@ -1,6 +1,7 @@
 
 #include "board.h" 
 #include <stddef.h>
+#define START_BONUS 500
 
 void initializeList(linkedList *list){
     list->last = list->first; 
@@ -19,6 +20,27 @@ Node *createNode(Locality *locality) {
 }
 
 ////////////////////////////////////////////
+void initializeBoard(linkedList *list){
+  initializeList(list);
+  startLocality *start;
+  start = (startLocality*)malloc(sizeof(startLocality));
+  strcpy(start->address,"START");
+  start->bonus==START_BONUS;
+  insertLocality(list,start);
+  
+}
+void checkStartBonus(linkedList *list,Player *player){
+  Locality currentLocality = getLocality(list,player->positionNumber);
+  if(strcmp(currentLocality.address,"START")==0){
+    player->balance+= START_BONUS;
+    printf("%s has landed on Start and recieved a bonus of %d\n",player->name, START_BONUS);
+  }
+}
+
+
+
+
+
 int insertLocality(linkedList *list, Locality *locality) {
     Node *node = createNode(locality);
     if (!node) {
@@ -67,7 +89,9 @@ void advance(linkedList *list,Player *player, int num){
         node = node->next;
         if(node==NULL){
           node=&(list->first);
+          checkStartBonus(list,player);
         }
+        checkStartBonus(list,player);
       }
       int numOnThisLoc = node->locality->numPlayersOnLoc;
       node->locality->playerOnLoc[numOnThisLoc]=*player;

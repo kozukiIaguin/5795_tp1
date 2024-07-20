@@ -51,18 +51,9 @@ void movePlayer(linkedList *list,Player *player){
     advance(list,player,housesToWalk);
      Node *node;
     *node->locality= getLocality(list,player->positionNumber);
-    //check if there is a house and buy it if doesnt have one yet
-    if(node->locality->owner==NULL){
-        printf("Doesnt have a owner, wanna buy it for %d R$?\n y/n");
-        char option[2];
-        scanf("%c",&option);
-        if(strcmp(option,"y")){
-              buyProperty(list,player);
-        }
-            else if(strcmp(option,"n")){
-                return;
-            }        
-    }
+    if(player->positionNumber==0)printf("This is start house, you cant buy it");return;
+    
+    //already check the bnus feature of the start locality
     
 }
 
@@ -70,17 +61,86 @@ void buyProperty(linkedList *list,Player *player){
  Node *node;
     *node->locality= getLocality(list,player->positionNumber);
     //check if there is a house and buy it if doesnt have one yet
-    if(node->locality->owner==NULL){
+    if(node->locality->owner.name==NULL){
         printf("Doesnt have a owner, wanna buy it for %d R$?\n y/n");
         char option[2];
         scanf("%c",&option);
         if(strcmp(option,"y")){
+            //check if the players balance is enought to buy it
+            if(player->balance<node->locality->Cost){
+                printf("Insuficient balance");
+                return;
+            }
                 player->balance-=node->locality->Cost;
-                *node->locality->owner=player->name;
+                *node->locality->owner.name=player->name;
         }
             else if(strcmp(option,"n")){
                 return;
             }        
+    }
+    else{
+        printf("Already has a owner");
+    }
+
+}
+void payRent(linkedList *list, Player *player){
+    Locality currentLocality = getLocality(list,player->positionNumber);
+    if(currentLocality.owner.name!=NULL){
+        printf("this locality has a owner(%s), you have to pay him the rent of %d R$",currentLocality.owner,currentLocality.rentalPrice);
+        //add the bankruptcy process
+        if(player->balance<currentLocality.rentalPrice)printf("You dont have cash to pay the rent, you lost the game");return;
+        //transfer the values
+        currentLocality.owner.balance+=currentLocality.rentalPrice;
+        player->balance-=currentLocality.rentalPrice;
+    }
+}
+void build(linkedList *list, Player *player){
+    Locality currentLocality = getLocality(list,player->positionNumber);
+    if(currentLocality.owner.name==player->name && player->balance>=currentLocality.Cost && currentLocality.houseAmount==0 &&currentLocality.hotelAmount==0){
+        printf("You can build a house here, do you wanna do it? y/n \n");
+        char option[2];
+        scanf("%c",&option);
+        if(strcmp(option,"y")){
+            currentLocality.houseAmount=1;
+            player->balance-=currentLocality.Cost;
+            currentLocality.rentalPrice=currentLocality.rentalPrice*5;
+        }
+            else if(strcmp(option,"n")){
+                return;
+            }        
+    }
+     if(currentLocality.owner.name==player->name && player->balance>=currentLocality.Cost && currentLocality.houseAmount==1 &&currentLocality.hotelAmount==0){
+         printf("You can build a hotel here, do you wanna do it? y/n \n");
+        char option[2];
+        scanf("%c",&option);
+        if(strcmp(option,"y")){
+            currentLocality.hotelAmount=1;
+            player->balance-=currentLocality.Cost*2;
+            currentLocality.rentalPrice=currentLocality.rentalPrice*10;
+        }
+            else if(strcmp(option,"n")){
+                return;
+            }      
+
+     }
+}
+void verifyBankruptcy(Player *player[]){
+    int i=0;
+    while (strcmp(*player[i]->name!=NULL)){
+       if (player[i]->balance<0){
+        printf("%s has gone bankrupt! Game over.\n", player[i]->name);
+        removePlayerFromGame(player,i);
+        
+
+    }
+    i++;
+    }
+}
+void removePlayerFromGame(Player *player[], int index){
+    int i=0;
+    while(strcmp(*player[i]->name!=NULL)){
+        player[i]=player[i+1];
+        i++;
     }
 
 }

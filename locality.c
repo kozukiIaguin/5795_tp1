@@ -8,7 +8,7 @@ Locality initializeLocality(Locality *loc,char *address[100], char *color[],int 
     loc->rentalPrice=rentalPrice;
     loc->hotelAmount=0;
     loc->houseAmount=0;
-    strcpy(loc->owner,"");
+    strcpy(loc->owner.name,"");
     loc->purchased=0;
     loc->numPlayersOnLoc = 0;
    // loc->playerOnLoc = malloc (sizeof((player)*loc->numPlayersOnLoc));
@@ -18,19 +18,20 @@ Locality initializeLocality(Locality *loc,char *address[100], char *color[],int 
     return *loc;
 
 }
-void buyLocality(Player *player,Locality *locality){
+
+
+
+void buyLocality(Player *player, Locality *locality){
     //check if player has cash to buy the locality
-    
 
-   /* if (player->balance < locality->Cost && locality->purchased=0)
+    if (player->balance < locality->Cost || locality->purchased == 1)
     {
-        printf("not enought balance");
-        return 0;
-    }*/
-    strcpy(locality->owner,player->name);
-    player->balance-=locality->Cost;
-    locality->purchased=1;
-
+        printf("not enough balance or locality already purchased\n");
+        return;
+    }
+    strcpy(locality->owner.name, player->name);
+    player->balance -= locality->Cost;
+    locality->purchased = 1;
 }
 void removePlayerFromLocality(Locality *locality, int index){
     for (int i = index; i < locality->numPlayersOnLoc-1; i++)
