@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 #define PLAYER_H
 
 
@@ -7,6 +9,7 @@ typedef struct
     int num;
     int balance;
     int positionNumber;
+    bool played;
 }Player;
 
 
