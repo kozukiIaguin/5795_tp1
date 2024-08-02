@@ -1,13 +1,21 @@
-#include<stdio.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include "game.h"
 
+int main() {
+    printf("testte");
+    srand(time(NULL)); // Inicializa o gerador de números aleatórios
 
-int main(){
-  Player *p1;
-  p1->balance =5;
-  int x=12;
-  printf("%d\n",p1->balance);
-  updateBalance(p1,x);
-  printf("%d\n",p1->balance);
-return 0;
+    Game game;
+    startGame(&game);
+
+    // Libera a memória alocada
+    for (int i = 0; i < game.numPlayers; i++) {
+        free(game.players[i]);
+    }
+    free(game.players);
+    // Implementar liberação de memória para o tabuleiro em `board.c`
+
+    return 0;
 }

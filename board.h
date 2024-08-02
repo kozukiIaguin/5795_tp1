@@ -1,32 +1,28 @@
-
+#ifndef BOARD_H
 #define BOARD_H
+
 #include "locality.h"
 
-
-
-
-
-//creating the structure for the linked list 
-//that will handle the localities from the boards
-typedef struct 
-{
-   Locality *locality;
+// Node for the linked list
+typedef struct Node {
+    Locality *locality;
     struct Node *next;
-}Node;
+} Node;
 
-typedef struct 
-{
-    Node first;      
-    Node last;
+// LinkedList for the board
+typedef struct {
+    Node *first;
+    Node *last;
     int size;
-}linkedList;
+} LinkedList;
+
 Node *createNode(Locality *locality);
+void initializeList(LinkedList *list);
+int insertLocality(LinkedList *list, Locality *locality);
+void printBoard(LinkedList *list);
+void advance(LinkedList *list, Player *player, int num);
+Locality getLocality(LinkedList *list, int index);
+void initializeBoard(LinkedList *list);
+void checkStartBonus(LinkedList *list, Player *player);
 
-void createList(linkedList *list);
-int insertLocality(linkedList *list,Locality *locality);
-void printBoard(linkedList *list);
-void advance(linkedList *list,Player *player,int num);
-Locality getLocality(linkedList *list,int index);
-void initializeBoard(linkedList *list);
-void checkStartBonus(linkedList *lsit,Player *player);
-
+#endif
