@@ -8,15 +8,14 @@ void initializeGame(Game *game, int numPlayers) {
     game->numPlayers = numPlayers;
     game->players = (Player **)malloc(numPlayers * sizeof(Player *));
     if (!game->players) {
-        perror("Failed to allocate memory for players");
-        exit(EXIT_FAILURE);
+        printf("Failed to allocate memory for players");
     }
 
     for (int i = 0; i < numPlayers; i++) {
         game->players[i] = (Player *)malloc(sizeof(Player));
         if (!game->players[i]) {
-            perror("Failed to allocate memory for player");
-            exit(EXIT_FAILURE);
+            printf("Failed to allocate memory for player");
+
         }
         // Inicialize cada jogador conforme necessário
         strcpy(game->players[i]->name, "");
@@ -27,66 +26,96 @@ void initializeGame(Game *game, int numPlayers) {
 
     game->board = (LinkedList *)malloc(sizeof(LinkedList));
     if (!game->board) {
-        perror("Failed to allocate memory for board");
-        exit(EXIT_FAILURE);
+        printf("Failed to allocate memory for board");
+      
     }
     initializeBoard(game->board);
 }
 
-// Função para preencher o tabuleiro com localidades
-void fillBoard(Game *game) {
-    FILE *file = fopen("localidades.txt", "r");
-    if (!file) {
-        perror("Failed to open localidades.txt");
-        exit(EXIT_FAILURE);
-    }
 
+Locality* readLocalityFromFile(FILE* file) {
     char address[100];
     char color[50];
     int cost, rentalPrice;
 
-    while (fscanf(file, "%99s %49s %d %d", address, color, &cost, &rentalPrice) == 4) {
-        Locality *loc = (Locality *)malloc(sizeof(Locality));
-        if (!loc) {
-            perror("Failed to allocate memory for locality");
-            exit(EXIT_FAILURE);
-        }
-        initializeLocality(loc, address, color, cost, rentalPrice);
+    if (fscanf(file, "%99s %49s %d %d", address, color, &cost, &rentalPrice) != 4) {
+        // Handle fscanf error, possibly return NULL
+        return NULL;
+    }
+
+    Locality* loc = (Locality*)malloc(sizeof(Locality));
+    if (!loc) {
+        printf("Failed to allocate memory for locality");
+        
+
+    }
+    initializeLocality(loc, address, color, cost, rentalPrice);
+    return loc;
+}
+
+void fillBoard(Game* game) {
+    FILE* file = fopen("localidades.txt", "r");
+    if (!file) {
+        printf("Failed to open localidades.txt");
+        
+    }
+
+    Locality* loc;
+    while ((loc = readLocalityFromFile(file)) != NULL) {
         insertLocality(game->board, loc);
+        // Ensure memory is properly managed here, free if necessary
     }
     fclose(file);
 }
 
-// Função para adicionar jogadores ao jogo
-void addPlayers(Game *game) {
-    FILE *file = fopen("jogadores.txt", "r");
+
+// Function to read a player name from a file
+char* readPlayerNameFromFile(FILE* file) {
+    char name[100];
+    if (fscanf(file, "%99s", name) != 1) {
+        // Handle fscanf error, possibly return NULL
+        return NULL;
+    }
+    // Dynamically allocate memory for the name to prevent buffer overflows
+    char* playerName = (char*)malloc(strlen(name) + 1);
+    if (!playerName) {
+        printf("Failed to allocate memory for player name");
+        
+    }
+    strcpy(playerName, name);
+    return playerName;
+}
+
+void addPlayers(Game* game) {
+    FILE* file = fopen("jogadores.txt", "r");
     if (!file) {
-        perror("Failed to open jogadores.txt");
-        exit(EXIT_FAILURE);
+        printf("Failed to open jogadores.txt");
+        
     }
 
-    char name[100];
     int numPlayers = 0;
-
-    while (fscanf(file, "%99s", name) == 1) {
+    char* playerName;
+    while ((playerName = readPlayerNameFromFile(file)) != NULL) {
         if (numPlayers < game->numPlayers) {
-            strcpy(game->players[numPlayers]->name, name);
+            // Ensure the player's name field is large enough to hold the name
+            strcpy(game->players[numPlayers]->name, playerName);
             numPlayers++;
         }
+        free(playerName); 
     }
     fclose(file);
 }
 
-// Função para mover o jogador
+
 void movePlayer(Game *game, int playerIndex) {
     Player *player = game->players[playerIndex];
-    int diceRoll = rand() % 6 + 1; // Simula o lançamento de um dado (1 a 6)
+    int diceRoll = rand() % 6 + 1;
     int newPosition = (player->positionNumber + diceRoll) % game->board->size;
     advance(game->board, player, diceRoll);
     player->positionNumber = newPosition;
 }
 
-// Função para pagar aluguel
+
 void payRent(Game *game, int playerIndex) {
     Player *player = game->players[playerIndex];
     Locality currentLoc = getLocality(game->board, player->positionNumber);
@@ -110,23 +139,32 @@ void payRent(Game *game, int playerIndex) {
     }
 }
 
-// Função para construir propriedades
-void build(Game *game, int playerIndex) {
-    // Lógica para construir casas e hotéis
-}
 
-// Função para verificar falência
+void build(Game *game, int playerIndex) {
+      Locality currentLocality = getLocality(game->board, game->players[playerIndex]->positionNumber);
+    if (currentLocality.owner.name == game->players[playerIndex]->name && game->players[playerIndex]->balance >= currentLocality.Cost && currentLocality.houseAmount == 0 && currentLocality.hotelAmount == 0) {
+        printf("You can build a house here, do you wanna do it? y/n \n");
+        char option[2];
+        scanf("%c", &option);
+        if (strcmp(option, "y")) {
+            currentLocality.houseAmount = 1;
+            game->players[playerIndex]->balance -= currentLocality.Cost;
+            currentLocality.rentalPrice = currentLocality.rentalPrice * 5;
+        } else if (strcmp(option, "n")) {
+            return;
+        }
+}}
+
+
 void verifyBankruptcy(Game *game) {
     for (int i = 0; i < game->numPlayers; i++) {
         if (game->players[i]->balance < 0) {
             printf("%s is bankrupt!\n", game->players[i]->name);
-            // Remover jogador do jogo
-            // Atualizar o tabuleiro e outras estruturas conforme necessário
+            
         }
     }
 }
 
-// Função para imprimir o estado do jogo
 void printGame(Game *game) {
     printf("Players:\n");
     for (int i = 0; i < game->numPlayers; i++) {
@@ -136,7 +174,7 @@ void printGame(Game *game) {
     printBoard(game->board);
 }
 
-// Função principal para iniciar o jogo
+
 void startGame(Game *game) {
     fillBoard(game);
     addPlayers(game);
@@ -149,8 +187,7 @@ void startGame(Game *game) {
                 build(game, i);
                 verifyBankruptcy(game);
                 printGame(game);
-                game->players[i]->played = true; // Marca o jogador como jogado
-                // Aqui pode-se implementar a lógica para passar a vez
+                game->players[i]->played = true; 
             }
         }
     }

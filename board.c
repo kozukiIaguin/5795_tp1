@@ -23,8 +23,8 @@ void initializeBoard(LinkedList *list) {
     initializeList(list);
     StartLocality *start = (StartLocality *)malloc(sizeof(StartLocality));
     if (!start) {
-        perror("Failed to allocate memory for start locality");
-        exit(EXIT_FAILURE);
+        printf("Failed to allocate memory for start locality");
+        
     }
 
     strcpy(start->address, "START");
@@ -34,9 +34,9 @@ void initializeBoard(LinkedList *list) {
 
     Locality *startLoc = (Locality *)malloc(sizeof(Locality));
     if (!startLoc) {
-        perror("Failed to allocate memory for start locality");
+        printf("Failed to allocate memory for start locality");
         free(start);
-        exit(EXIT_FAILURE);
+        
     }
 
     initializeLocality(startLoc, start->address, "None", 0, 0);
@@ -122,8 +122,8 @@ void advance(LinkedList *list, Player *player, int num) {
         loc->playerOnLoc = realloc(loc->playerOnLoc, (loc->numPlayersOnLoc + 1) * sizeof(Player));
     }
     if (!loc->playerOnLoc) {
-        perror("Failed to allocate memory for players on locality");
-        exit(EXIT_FAILURE);
+        printf("Failed to allocate memory for players on locality");
+        
     }
 
     // Add player to the new location
